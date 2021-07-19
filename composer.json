@@ -1,7 +1,7 @@
 {
     "type": "project",
-    "name": "taras-koval/mvc-app",
-    "description": "Custom MVC Framework",
+    "name": "taras-koval/app",
+    "description": "",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "license": "proprietary",
