@@ -29,9 +29,10 @@ class Response
         echo $this->body;
     }
     
-    public function setStatusCode(int $code)
+    public function setStatusCode(int $code): Response
     {
         http_response_code($code);
+        return $this;
     }
     
     public function redirect($url)

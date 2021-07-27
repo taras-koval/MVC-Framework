@@ -37,7 +37,7 @@
         
         <div class="contact-form-wrapper">
             
-            <div class="contact-form-header">
+            <div class="contact-form-title">
                 <h2>Send Us A Message</h2>
             </div>
             

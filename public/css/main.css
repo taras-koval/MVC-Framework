@@ -206,12 +206,12 @@ body {
     }
 }
 
-.contact-page__body .contact-form-header {
+.contact-page__body .contact-form-title {
     margin-bottom: 20px;
 }
 
 @media (min-width: 1135px) {
-    .contact-page__body .contact-form-header {
+    .contact-page__body .contact-form-title {
         margin-bottom: 25px;
     }
 }

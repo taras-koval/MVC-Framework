@@ -11,6 +11,11 @@ abstract class Controller
         $this->view = new View();
     }
     
+    protected function renderView(string $path, array $data = []) : Response
+    {
+        return new Response($this->view->make(ROOT . "/views/$path", $data));
+    }
+    
     protected function render(string $view, array $data = []) : Response
     {
         $dir = $this->getViewsDir();
@@ -22,13 +27,12 @@ abstract class Controller
     {
         if (file_exists(ROOT . "/views/layouts/$layout.php")) {
             $this->view->layout = $layout;
-        }
+    }
     }
     
     private function getViewsDir() : string
     {
         // Controller name without namespace
-        // $controller = str_replace('App\\Controller\\', '', get_class($this));
         $controller = substr(strrchr(get_class($this), '\\'), 1);
     
         // Directory with views of the current controller
