@@ -19,6 +19,9 @@ class Router
         $this->routes = include ROOT . '/config/routes.php';
     }
     
+    /**
+     * @return Response
+     */
     public function run() : Response
     {
         $method = $this->request->getMethod();
@@ -41,31 +44,35 @@ class Router
         return call_user_func([$controllerInstance, $action], $this->request , ...$params);
     }
     
-    private function compileRoutes(&$routes)
-    {
-        $processedRoutes = [];
-        $pattern = '~{[a-z][A-Za-z0-9]+}~';
-        $replacement = '([A-Za-z0-9_-]+)';
-        
-        foreach ($routes as $key => $val) {
-            $processedRoutes['~^' . preg_replace($pattern, $replacement, $key) . '$~'] = $val;
-        }
-        
-        $routes = $processedRoutes;
-    }
-    
+    /**
+     * @param $routes
+     * @param $path
+     * @param $params
+     * @return false|mixed
+     */
     private function findUnstatic($routes, $path, &$params)
     {
-        $this->compileRoutes($routes);
-    
-        foreach ($routes as $pattern => $callback) {
-            if (preg_match($pattern, $path, $params)) {
+        foreach ($routes as $route => $controller) {
+            if (preg_match($this->routeCompile($route), $path, $params)) {
                 array_shift($params);
-                return $callback;
+                return $controller;
             }
         }
         
         return false;
+    }
+    
+    /**
+     * @param $route
+     * @return string
+     */
+    private function routeCompile($route): string
+    {
+        $default = '(\w+)';
+        
+        return preg_replace_callback('~{(.+?)}~', function ($match) use ($default) {
+            return preg_match('~<(.+?)>~', $match[1], $regex)? "($regex[1])" : $default;
+        }, "~^$route$~");
     }
     
 }
