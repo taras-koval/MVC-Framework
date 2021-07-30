@@ -15,7 +15,6 @@ class Router
     public function __construct(Request $request)
     {
         $this->request = $request;
-        
         $this->routes = include ROOT . '/config/routes.php';
     }
     
@@ -68,7 +67,7 @@ class Router
      */
     private function routeCompile($route): string
     {
-        $default = '(\w+)';
+        $default = '([a-zA-Z][a-zA-Z0-9-_]*)';
         
         return preg_replace_callback('~{(.+?)}~', function ($match) use ($default) {
             return preg_match('~<(.+?)>~', $match[1], $regex)? "($regex[1])" : $default;
