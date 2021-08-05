@@ -13,7 +13,6 @@ class Register extends Model
     
     public function register(): bool
     {
-        echo "Creating new user";
         return true;
     }
     
