@@ -1,3 +1,2 @@
-<h1>Error 404</h1>
-<h2>Not Found</h2>
-<h3><?= $data['path'] ?></h3>
+<h1>Error 404 (Not Found)</h1>
+<h2><?= $path ?></h2>

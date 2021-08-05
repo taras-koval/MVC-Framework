@@ -11,11 +11,6 @@ abstract class Controller
         $this->view = new View();
     }
     
-    protected function renderView(string $path, array $data = []) : Response
-    {
-        return new Response($this->view->make(ROOT . "/views/$path", $data));
-    }
-    
     protected function render(string $view, array $data = []) : Response
     {
         $dir = $this->getViewsDir();
@@ -23,11 +18,14 @@ abstract class Controller
         return new Response($renderedView);
     }
     
+    protected function renderByPath(string $path, array $data = []) : Response
+    {
+        return new Response($this->view->make(ROOT . "/views/$path", $data));
+    }
+    
     protected function setLayout(string $layout)
     {
-        if (file_exists(ROOT . "/views/layouts/$layout.php")) {
-            $this->view->layout = $layout;
-    }
+        $this->view->setLayout($layout);
     }
     
     private function getViewsDir() : string

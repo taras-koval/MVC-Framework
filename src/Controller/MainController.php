@@ -12,13 +12,12 @@ class MainController extends Controller
     public function index(): Response
     {
         
-    
         return $this->render('home');
     }
     
     public function contact(): Response
     {
-        $this->setLayout('test');
+        
         return $this->render('contact');
     }
     
@@ -32,6 +31,7 @@ class MainController extends Controller
     
     public function notFound(Request $request): Response
     {
+        $this->setLayout('main');
         return $this->render('404', ['path' => $request->getPath()])->setStatusCode('404');
     }
 }

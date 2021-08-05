@@ -18,6 +18,11 @@ class Request
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
     
+    public function isPost(): bool
+    {
+        return $this->getMethod() === 'post';
+    }
+    
     public function GetBody(): array
     {
         $body = [];
