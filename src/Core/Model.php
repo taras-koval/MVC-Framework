@@ -24,7 +24,7 @@ abstract class Model
     {
         foreach ($data as $field => $val) {
             if (property_exists($this, $field)) {
-                $this->$field = $val;
+                $this->{$field} = $val;
             }
         }
     }
@@ -35,29 +35,28 @@ abstract class Model
     public function validate(): bool
     {
         foreach ($this->rules() as $attribute => $rules) {
-            $value = $this->$attribute;
+            $value = $this->{$attribute};
             
-            foreach ($rules as $subRule) {
-                $rule = is_string($subRule)? $subRule : $subRule[0];
+            foreach ($rules as $rule) {
+                $ruleName = is_string($rule)? $rule : $rule[0];
     
-                if ($rule === self::RULE_REQUIRED && empty($value)) {
+                if ($ruleName === self::RULE_REQUIRED && empty($value)) {
                     $this->addError($attribute, self::RULE_REQUIRED);
                 }
     
-                if ($rule === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     $this->addError($attribute, self::RULE_EMAIL);
                 }
     
-                if ($rule === self::RULE_MIN && strlen($value) < $subRule['min']) {
-                    $this->addError($attribute, self::RULE_MIN, $subRule);
+                if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
+                    $this->addError($attribute, self::RULE_MIN, $rule);
                 }
     
-                if ($rule === self::RULE_MAX && strlen($value) > $subRule['max']) {
-                    $this->addError($attribute, self::RULE_MAX, $subRule);
+                if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
+                    $this->addError($attribute, self::RULE_MAX, $rule);
                 }
-    
-                if ($rule === self::RULE_MATCH && $value !== $this->$subRule['match']) {
-                    dump($value, $this->$subRule['match']);
+                
+                if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
                     $this->addError($attribute, self::RULE_MATCH);
                 }
             }
