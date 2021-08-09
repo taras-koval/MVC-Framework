@@ -8,23 +8,19 @@ class App
     private Response $response;
     private Router $router;
     
+    public static Database $database;
+    
     public function __construct()
     {
         $this->request = new Request();
         $this->response = new Response();
         $this->router = new Router($this->request);
+        
+        self::$database = new Database();
     }
     
     public function run()
     {
-        /*$response = $this->router->run();
-        
-        if (!$response instanceof Response) {
-            $this->response = new Response($response);
-        } else {
-            $this->response = $response;
-        }*/
-        
         $this->response = $this->router->run();
         $this->response->send();
     }

@@ -12,7 +12,9 @@
         }
     ],
     "require": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "ext-pdo": "*",
+        "symfony/dotenv": "^5.3"
     },
     "require-dev": {
         "symfony/var-dumper": "^5"

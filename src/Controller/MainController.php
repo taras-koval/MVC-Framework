@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\App;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;

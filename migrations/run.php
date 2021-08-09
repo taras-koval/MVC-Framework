@@ -8,4 +8,4 @@ define('ROOT', dirname(__DIR__));
 require ROOT . '/vendor/autoload.php';
 
 (new Dotenv())->load(ROOT . '/.env');
-(new App())->run();
+(new App())::$database->applyMigrations();
