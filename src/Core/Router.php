@@ -51,10 +51,10 @@ class Router
      */
     private function findUnstatic($routes, $path, &$params)
     {
-        foreach ($routes as $route => $controller) {
+        foreach ($routes as $route => $handler) {
             if (preg_match($this->routeCompile($route), $path, $params)) {
                 array_shift($params);
-                return $controller;
+                return $handler;
             }
         }
         
