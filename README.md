@@ -1,6 +1,4 @@
-# Project 
 
-Self-made MVC framework
 
 ## Requirements
 
