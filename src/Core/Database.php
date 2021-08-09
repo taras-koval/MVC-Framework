@@ -33,7 +33,7 @@ class Database
         
         foreach ($toApplyMigrations as $migration) {
             
-            if ($migration === '.' || $migration === '..' || $migration === 'run.php') {
+            if ($migration === '.' || $migration === '..') {
                 continue;
             }
             
@@ -77,7 +77,7 @@ class Database
     
     private function saveMigrations(array $migrations)
     {
-        $str = implode(", ", $migrations = array_map(fn($m) => "('$m')", $migrations));
+        $str = implode(", ", array_map(fn($m) => "('$m')", $migrations));
         
         $stmt = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $str");
         $stmt->execute();
