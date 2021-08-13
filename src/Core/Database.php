@@ -10,7 +10,7 @@ class Database
     
     public function __construct()
     {
-        $config = require ROOT . '/config/database.php';
+        $config = require ROOT.'/config/database.php';
         
         $this->pdo = new PDO(
             $config['dsn'],
@@ -20,13 +20,22 @@ class Database
         );
     }
     
+    public function findOneBy(array $criteria)
+    {
+    
+    }
+    
+    public function prepare($sql)
+    {
+        return $this->pdo->prepare($sql);
+    }
     
     public function applyMigrations()
     {
         $this->createMigrationsTable();
         $appliedMigrations = $this->getAppliedMigrations();
         
-        $files = scandir(ROOT . '/migrations');
+        $files = scandir(ROOT.'/migrations');
         $toApplyMigrations = array_diff($files, $appliedMigrations);
         
         $newMigrations = [];
@@ -37,7 +46,7 @@ class Database
                 continue;
             }
             
-            require_once ROOT . '/migrations/' . $migration;
+            require_once ROOT.'/migrations/' . $migration;
             
             $className = pathinfo($migration, PATHINFO_FILENAME);
             $instance = new $className();
@@ -77,9 +86,9 @@ class Database
     
     private function saveMigrations(array $migrations)
     {
-        $str = implode(", ", array_map(fn($m) => "('$m')", $migrations));
+        $values = implode(', ', array_map(fn($value) => "('$value')", $migrations));
         
-        $stmt = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $str");
+        $stmt = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $values");
         $stmt->execute();
     }
     
