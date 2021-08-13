@@ -9,6 +9,7 @@ class App
     private Router $router;
     
     public static Database $database;
+    public static Session $session;
     
     public function __construct()
     {
@@ -17,6 +18,7 @@ class App
         $this->router = new Router($this->request);
         
         self::$database = new Database();
+        self::$session = new Session();
     }
     
     public function run()
