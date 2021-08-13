@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 
 define('ROOT', dirname(__DIR__));
 require ROOT.'/vendor/autoload.php';
+require ROOT.'/src/helpers.php';
 
 (new Dotenv())->load(ROOT.'/.env');
 (new App())->run();
