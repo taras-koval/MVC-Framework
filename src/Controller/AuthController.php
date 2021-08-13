@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Core\App;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Model\Register;
+use App\Model\User;
 
 class AuthController extends Controller
 {
@@ -15,33 +16,27 @@ class AuthController extends Controller
         $this->setLayout('main');
     }
     
-    public function loginHandler(Request $request): Response
-    {
-        
-        return $this->render('login', ['method' => $request->getMethod()]);
-    }
-    
     public function login(Request $request): Response
     {
         
         return $this->render('login', ['method' => $request->getMethod()]);
     }
     
-    public function registerHandler(Request $request): Response
+    public function register(Request $request): Response
     {
-        $model = new Register();
-        $model->setData($request->GetBody());
+        $user = new User();
+        
+        if ($request->isPost()) {
+            $user->setData($request->GetBody());
     
-        if ($model->validate() && $model->register()) {
-            echo 'Success';
+            if ($user->validate() && $user->save()) {
+                App::$session->setFlash('success', 'Register success');
+                (new Response())->redirect('/register');
+            }
+    
+            return $this->render('register', ['model' => $user]);
         }
-    
-        return $this->render('register', ['model' => $model]);
-    }
-    
-    public function register(): Response
-    {
-        $model = new Register();
-        return $this->render('register', ['model' => $model]);
+        
+        return $this->render('register', ['model' => $user]);
     }
 }

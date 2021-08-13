@@ -1,8 +1,10 @@
 <h1>Register</h1>
 
+<?php /*dump($model)*/ ?>
+
 <form action="" method="post">
     <div class="form-group">
-        <label for="username" class="form-label">Username</label>
+        <label for="username" class="form-label"><?= $model->labels()['username'] ?></label>
         <input
             type="text"
             name="username"
@@ -14,9 +16,9 @@
     </div>
     
     <div class="form-group">
-        <label for="email" class="form-label">Email</label>
+        <label for="email" class="form-label"><?= $model->labels()['email'] ?></label>
         <input
-            type="email"
+            type="text"
             name="email"
             value="<?= $model->email ?>"
             class="form-control <?= $model->hasError("email") ? 'is-invalid' : '' ?>"
@@ -27,7 +29,7 @@
     </div>
     
     <div class="form-group">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label"><?= $model->labels()['password'] ?></label>
         <input
             type="password"
             name="password"
@@ -39,7 +41,7 @@
     </div>
     
     <div class="form-group">
-        <label for="confirmPassword" class="form-label">Confirm password</label>
+        <label for="confirmPassword" class="form-label"><?= $model->labels()['confirmPassword'] ?></label>
         <input
             type="password"
             name="confirmPassword"
