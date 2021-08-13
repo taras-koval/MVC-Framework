@@ -4,8 +4,6 @@ namespace App\Core;
 
 abstract class Model
 {
-    protected Database $db;
-    
     public const RULE_REQUIRED = 'required';
     public const RULE_ALPHANUMERIC = 'alphanumeric';
     public const RULE_EMAIL = 'email';
@@ -15,11 +13,6 @@ abstract class Model
     public const RULE_UNIQUE = 'unique';
     
     public array $errors = [];
-    
-    public function __construct()
-    {
-        $this->db = App::$database;
-    }
     
     abstract public function table(): string;
     abstract public function fields(): array;
@@ -46,7 +39,7 @@ abstract class Model
             implode(',', $params)
         );
         
-        $stmt = $this->db->prepare($sql);
+        $stmt = db()->prepare($sql);
         
         foreach ($fields as $field) {
             $stmt->bindValue(":$field", $this->{$field});
@@ -109,7 +102,7 @@ abstract class Model
                         $className = $rule['class'];
                         $table = $className::table();
                         
-                        $stmt = $this->db->prepare("SELECT * FROM $table WHERE $field = :field");
+                        $stmt = db()->prepare("SELECT * FROM $table WHERE $field = :field");
                         $stmt->bindValue(":field", $value);
                         $stmt->execute();
                         
