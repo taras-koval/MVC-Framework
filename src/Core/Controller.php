@@ -13,14 +13,10 @@ abstract class Controller
     
     protected function render(string $view, array $data = []) : Response
     {
-        $dir = $this->getViewsDir();
-        $renderedView = $this->view->make(ROOT . "/views/$dir/$view.php", $data);
+        $viewsPath = $this->view->getViewsPath();
+        $controllerViewsDir = $this->getControllerViewsDir();
+        $renderedView = $this->view->make("$viewsPath/$controllerViewsDir/$view.php", $data);
         return new Response($renderedView);
-    }
-    
-    protected function renderByPath(string $path, array $data = []) : Response
-    {
-        return new Response($this->view->make(ROOT . "/views/$path", $data));
     }
     
     protected function setLayout(string $layout)
@@ -28,7 +24,7 @@ abstract class Controller
         $this->view->setLayout($layout);
     }
     
-    private function getViewsDir() : string
+    private function getControllerViewsDir() : string
     {
         // Controller name without namespace
         $controller = substr(strrchr(get_class($this), '\\'), 1);
@@ -36,4 +32,5 @@ abstract class Controller
         // Directory with views of the current controller
         return str_replace('Controller', '', lcfirst($controller));
     }
+    
 }

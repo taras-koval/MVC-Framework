@@ -5,11 +5,21 @@ namespace App\Core;
 class View
 {
     private string $layout;
-    private string $layouts = ROOT . '/views/_layouts';
+    private string $layoutsPath;
+    private string $viewsPath;
     
-    public function __construct(string $layout = 'test')
+    public function __construct()
     {
-        $this->layout = $layout;
+        $config = require ROOT.'/config/view.php';
+        
+        $this->layout = $config['defalultLayout'];
+        $this->layoutsPath = $config['layoutsPath'];
+        $this->viewsPath = $config['viewsPath'];
+    }
+    
+    public function getViewsPath()
+    {
+        return $this->viewsPath;
     }
     
     public function make(string $path, array $data)
@@ -19,29 +29,25 @@ class View
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
     
-    private function getViewContent(string $viewFilePath, array $data)
+    private function getViewContent(string $viewPath, array $data)
     {
-        /*foreach ($data as $key => $value) {
-            $$key = $value;
-        }*/
-        
         extract($data);
         
         ob_start();
-        include_once $viewFilePath;
+        require $viewPath;
         return ob_get_clean();
     }
     
     private function getLayoutContent()
     {
         ob_start();
-        include_once "$this->layouts/$this->layout.php";
+        require "$this->layoutsPath/$this->layout.php";
         return ob_get_clean();
     }
     
     public function setLayout(string $layout)
     {
-        if (file_exists("$this->layouts/$layout.php")) {
+        if (file_exists("$this->layoutsPath/$layout.php")) {
             $this->layout = $layout;
         }
     }
