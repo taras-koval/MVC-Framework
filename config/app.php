@@ -1,5 +1,8 @@
 <?php
 
+use App\Model\User\User;
+
 return [
-    'errors' => true
+    'errors' => true,
+    'userClass' => User::class
 ];

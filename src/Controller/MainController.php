@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Core\App;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
@@ -25,7 +24,7 @@ class MainController extends Controller
     public function test(Request $request, $slug, $id): Response
     {
         dump($slug, $id);
-        dump($request->GetBody());
+        dump($request->getBody());
         
         return new Response();
     }

@@ -5,37 +5,57 @@ namespace App\Controller;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Model\User;
+use App\Model\User\User;
+use App\Model\User\UserLogin;
+use App\Model\User\UserRegister;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->setLayout('main');
+        $this->setLayout('bootstrap');
     }
     
     public function login(Request $request): Response
     {
+        $userLogin = new UserLogin();
         
-        return $this->render('login', ['method' => $request->getMethod()]);
+        if ($request->isPost()) {
+            $userLogin->loadFromRequest($request);
+    
+            if ($userLogin->validate() && $userLogin->login()) {
+                session()->setFlash('success', 'Login success');
+                redirect('/login');
+            }
+        }
+        
+        return $this->render('auth/login.php', ['model' => $userLogin]);
     }
     
     public function register(Request $request): Response
     {
-        $user = new User();
+        $userRegister = new UserRegister();
         
         if ($request->isPost()) {
-            $user->setData($request->GetBody());
+            $userRegister->loadFromRequest($request);
     
-            if ($user->validate() && $user->save()) {
-                session()->setFlash('success', 'Register success');
-                (new Response())->redirect('/register');
+            if ($userRegister->validate()) {
+                $user = (new User())->load($userRegister);
+                
+                if ($user->save()) {
+                    session()->setFlash('success', 'Register success');
+                    redirect('/register');
+                }
             }
-    
-            return $this->render('register', ['model' => $user]);
         }
         
-        return $this->render('register', ['model' => $user]);
+        return $this->render('register', ['model' => $userRegister]);
+    }
+    
+    public function logout()
+    {
+        session()->logout();
+        redirect('/login');
     }
 }
