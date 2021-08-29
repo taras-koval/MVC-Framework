@@ -23,7 +23,7 @@ class Request
         return $this->getMethod() === 'post';
     }
     
-    public function GetBody(): array
+    public function getBody(): array
     {
         $body = [];
         
