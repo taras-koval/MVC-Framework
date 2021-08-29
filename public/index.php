@@ -3,7 +3,7 @@
 use App\Core\App;
 use Symfony\Component\Dotenv\Dotenv;
 
-define('ROOT', dirname(__DIR__));
+define('ROOT', strtr(dirname(__DIR__), '\\', '/'));
 
 ini_set('display_errors', 0);
 error_reporting(0);
