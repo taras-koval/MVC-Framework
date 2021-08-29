@@ -36,12 +36,17 @@
         </nav>
         
         <nav class="right-page-nav">
-            
+            <?php if (session()->isGuest()): ?>
             <div class="nav-group">
                 <a href="/login/">Login</a>
                 <a href="/register/">Register</a>
             </div>
-            
+            <?php else: ?>
+            <div class="nav-group">
+                <a href=""><strong><?= session()->user->username ?></strong></a>
+                <a href="/logout">Logout</a>
+            </div>
+            <?php endif; ?>
         </nav>
     
     </div>

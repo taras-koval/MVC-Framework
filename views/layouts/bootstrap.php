@@ -1,8 +1,3 @@
-<?php
-
-use App\Core\App;
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +30,6 @@ use App\Core\App;
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             
             <ul class="navbar-nav">
-                
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                     <!--<a class="nav-link active" aria-current="page" href="/">Home</a>-->
@@ -44,11 +38,10 @@ use App\Core\App;
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Contact</a>
                 </li>
-            
             </ul>
             
+            <?php if (session()->isGuest()): ?>
             <ul class="navbar-nav" style="margin-left: auto">
-                
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
@@ -56,8 +49,19 @@ use App\Core\App;
                 <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
-            
             </ul>
+            <?php else: ?>
+            <ul class="navbar-nav" style="margin-left: auto">
+                <li class="nav-item">
+                    <strong class="nav-link"><?= session()->user->username ?></strong>
+                    <!--<a class="nav-link" href="/login">Login</a>-->
+                </li>
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+            <?php endif; ?>
         
         </div>
         <!--</div>-->
@@ -66,9 +70,9 @@ use App\Core\App;
 
 <div class="container">
     
-    <?php if (App::$session->getFlash('success')): ?>
-        <div class="alert alert-success">
-            <?= App::$session->getFlash('success') ?>
+    <?php if (session()->getFlash('success')): ?>
+        <div class="alert alert-success mt-4">
+            <?= session()->getFlash('success') ?>
         </div>
     <?php endif; ?>
     
