@@ -11,12 +11,16 @@ abstract class Controller
         $this->view = new View();
     }
     
-    protected function render(string $view, array $data = []) : Response
+    protected function render(string $view, array $data = []): Response
     {
-        $viewsPath = $this->view->getViewsPath();
-        $controllerViewsDir = $this->getControllerViewsDir();
-        $renderedView = $this->view->make("$viewsPath/$controllerViewsDir/$view.php", $data);
-        return new Response($renderedView);
+        $path = $this->getFullPath($view);
+        return new Response($this->view->make($path, $data));
+    }
+    
+    protected function renderOnlyView(string $view, array $data = []): Response
+    {
+        $path = $this->getFullPath($view);
+        return new Response($this->view->getViewContent($path, $data));
     }
     
     protected function setLayout(string $layout)
@@ -33,4 +37,16 @@ abstract class Controller
         return str_replace('Controller', '', lcfirst($controller));
     }
     
+    private function getFullPath($view): string
+    {
+        $view = ltrim($view, '\\/');
+        $viewsPath = $this->view->getViewsPath();
+    
+        if (preg_match('~[\W]+~', $view)) {
+            return "$viewsPath/$view";
+        }
+    
+        $controllerViewsDir = $this->getControllerViewsDir();
+        return "$viewsPath/$controllerViewsDir/$view.php";
+    }
 }

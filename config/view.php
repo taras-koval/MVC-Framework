@@ -2,6 +2,6 @@
 
 return [
     'defalultLayout' => 'main',
-    'layoutsPath' => ROOT.'/views/_layouts',
-    'viewsPath' => ROOT.'/views'
+    'layoutsPath' => ROOT.'/views/layouts',
+    'viewsPath' => ROOT.'/views/contents'
 ];

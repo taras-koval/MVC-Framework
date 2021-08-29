@@ -29,7 +29,7 @@ class View
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
     
-    private function getViewContent(string $viewPath, array $data)
+    public function getViewContent(string $viewPath, array $data)
     {
         extract($data);
         
