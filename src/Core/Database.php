@@ -11,23 +11,82 @@ class Database
     public function __construct()
     {
         $config = require ROOT.'/config/database.php';
-        
-        $this->pdo = new PDO(
-            $config['dsn'],
-            $config['user'],
-            $config['pass'],
-            $config['options']
-        );
-    }
-    
-    public function findOneBy(array $criteria)
-    {
-    
+        $this->pdo = new PDO( $config['dsn'], $config['user'], $config['pass'], $config['options']);
     }
     
     public function prepare($sql)
     {
         return $this->pdo->prepare($sql);
+    }
+    
+    public function find(string $table, array $where, string $className = null)
+    {
+        $fields = array_keys($where);
+        if (count(array_filter($fields, 'is_int')) > 0) {
+            return false;
+        }
+        
+        $params = array_map(fn($field) => "$field = :$field", $fields);
+        $stmt = $this->pdo->prepare("SELECT * FROM $table WHERE ". implode(' AND ', $params));
+    
+        foreach ($where as $field => $value) {
+            $stmt->bindValue(":$field", $value);
+        }
+        
+        $stmt->execute();
+        
+        if (isset($className)) {
+            $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
+        }
+        return $stmt->fetch();
+    }
+    
+    public function findAll(string $table, array $where, $orderBy = 1,
+        int $limit = 100, int $offset = 0, string $className = null)
+    {
+        $fields = array_keys($where);
+        if (count(array_filter($fields, 'is_int')) > 0) {
+            return false;
+        }
+        
+        $params = array_map(fn($field) => "$field = :$field", $fields);
+        $params = implode(' AND ', $params);
+    
+        $sql = sprintf('SELECT * FROM %s WHERE %s ORDER BY %s LIMIT %u OFFSET %u',
+            $table, $params, $orderBy, $limit, $offset);
+        
+        $stmt = $this->pdo->prepare($sql);
+        
+        foreach ($where as $field => $value) {
+            $stmt->bindValue(":$field", $value);
+        }
+        
+        $stmt->execute();
+    
+        if (isset($className)) {
+            $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
+        }
+        return $stmt->fetchAll();
+    }
+    
+    public function add(string $table, array $data)
+    {
+        $fields = array_keys($data);
+        $params = array_map(fn($param) => ":$param", $fields);
+        
+        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)',
+            $table,
+            implode(',', $fields),
+            implode(',', $params)
+        );
+        
+        $stmt = $this->pdo->prepare($sql);
+    
+        foreach ($fields as $field) {
+            $stmt->bindValue(":$field", $data[$field]);
+        }
+        
+        return $stmt->execute()? $this->pdo->lastInsertId() : false;
     }
     
     public function applyMigrations()
