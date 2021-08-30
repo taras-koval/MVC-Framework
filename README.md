@@ -4,13 +4,11 @@
 
 * PHP 7.4
 * MySQL 5.7
-* Composer
+* [Composer](http://getcomposer.org/)
 
 ## Installation
 
-First, you will need to install [Composer](http://getcomposer.org/) following the instructions on their site.
-
-Then, from your project's root directory run the following command:
+From your project's root directory run the following command:
 
 ```
 composer install
