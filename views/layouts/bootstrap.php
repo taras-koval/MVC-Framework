@@ -53,8 +53,9 @@
             <?php else: ?>
             <ul class="navbar-nav" style="margin-left: auto">
                 <li class="nav-item">
-                    <strong class="nav-link"><?= session()->user->username ?></strong>
-                    <!--<a class="nav-link" href="/login">Login</a>-->
+                    <a class="nav-link" href="/profile">
+                        <strong><?= session()->user->username ?></strong>
+                    </a>
                 </li>
         
                 <li class="nav-item">

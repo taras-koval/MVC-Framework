@@ -23,7 +23,6 @@ $routes['post']['/login'] = [AuthController::class, 'login'];
 $routes['get']['/register'] = [AuthController::class, 'register'];
 $routes['post']['/register'] = [AuthController::class, 'register'];
 $routes['get']['/logout'] = [AuthController::class, 'logout'];
-
-$routes['notFound'] = [MainController::class, 'notFound'];
+$routes['get']['/profile'] = [AuthController::class, 'profile'];
 
 return $routes;

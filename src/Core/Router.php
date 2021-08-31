@@ -30,15 +30,19 @@ class Router
         $route = $this->routes[$method][$path] ?? false;
     
         if (!$route) {
-            $route = $this->findUnstatic($this->routes[$method], $path, $params);
+            $route = $this->findUnstaticRoute($this->routes[$method], $path, $params);
         }
         
         if (!$route) {
-            $route = $this->routes['notFound'];
+            return view('main/404.php')->setStatusCode(404);
         }
         
         [$controller, $action] = $route;
         $controllerInstance = new $controller();
+        
+        foreach ($controllerInstance->getMiddlewares() as $middleware) {
+            $middleware->execute(['action' => $action]);
+        }
         
         return call_user_func([$controllerInstance, $action], $this->request , ...$params);
     }
@@ -49,7 +53,7 @@ class Router
      * @param $params
      * @return false|mixed
      */
-    private function findUnstatic($routes, $path, &$params)
+    private function findUnstaticRoute($routes, $path, &$params)
     {
         foreach ($routes as $route => $handler) {
             if (preg_match($this->routeCompile($route), $path, $params)) {
@@ -70,7 +74,7 @@ class Router
         $default = '([a-zA-Z][a-zA-Z0-9-_]*)';
         
         return preg_replace_callback('~{(.+?)}~', function ($match) use ($default) {
-            return preg_match('~<(.+?)>~', $match[1], $regex)? "($regex[1])" : $default;
+            return preg_match('~<(.+?)>~', $match[1], $regex) ? "($regex[1])" : $default;
         }, "~^$route$~");
     }
     

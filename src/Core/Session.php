@@ -7,17 +7,17 @@ class Session
     public ?ModelAR $user = null;
     public string $userClass;
     
-    protected const FLASH_KEY = 'flash';
-    
     public function __construct()
     {
         session_start();
     
-        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
+        $flashMessages = $_SESSION['flash'] ?? [];
+        
         foreach ($flashMessages as &$flashMessage) {
             $flashMessage['remove'] = true;
         }
-        $_SESSION[self::FLASH_KEY] = $flashMessages;
+        
+        $_SESSION['flash'] = $flashMessages;
     
         $this->userClass = (require ROOT.'/config/app.php')['userClass'];
         
@@ -64,7 +64,7 @@ class Session
     
     public function setFlash($key, $message)
     {
-        $_SESSION[self::FLASH_KEY][$key] = [
+        $_SESSION['flash'][$key] = [
             'remove' => false,
             'value' => $message
         ];
@@ -72,12 +72,12 @@ class Session
     
     public function getFlash($key)
     {
-        return $_SESSION[self::FLASH_KEY][$key]['value'] ?? '';
+        return $_SESSION['flash'][$key]['value'] ?? '';
     }
     
     public function __destruct()
     {
-        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
+        $flashMessages = $_SESSION['flash'] ?? [];
         
         foreach ($flashMessages as $key => &$flashMessage) {
             if ($flashMessage['remove']) {
@@ -85,6 +85,6 @@ class Session
             }
         }
         
-        $_SESSION[self::FLASH_KEY] = $flashMessages;
+        $_SESSION['flash'] = $flashMessages;
     }
 }

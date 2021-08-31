@@ -29,12 +29,13 @@ class Response
         echo $this->body;
     }
     
-    public function setStatusCode(int $code): Response
+    public function setStatusCode(int $statusCode): Response
     {
-        http_response_code($code);
+        http_response_code($statusCode);
         return $this;
     }
     
+    // TODO set status code
     public function redirect($url)
     {
         header("Location: $url");

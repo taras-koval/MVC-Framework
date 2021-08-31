@@ -20,18 +20,4 @@ class MainController extends Controller
         
         return $this->render('contact');
     }
-    
-    public function test(Request $request, $slug, $id): Response
-    {
-        dump($slug, $id);
-        dump($request->getBody());
-        
-        return new Response();
-    }
-    
-    public function notFound(Request $request): Response
-    {
-        $this->setLayout('main');
-        return $this->render('404', ['path' => $request->getPath()])->setStatusCode('404');
-    }
 }

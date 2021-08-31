@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-class Model
+abstract class Model
 {
     public array $errors = [];
     

@@ -43,7 +43,7 @@
             </div>
             <?php else: ?>
             <div class="nav-group">
-                <a href=""><strong><?= session()->user->username ?></strong></a>
+                <a href="/profile"><strong><?= session()->user->username ?></strong></a>
                 <a href="/logout">Logout</a>
             </div>
             <?php endif; ?>
