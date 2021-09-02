@@ -4,7 +4,7 @@ namespace App\Middleware;
 
 use App\Core\Middleware;
 
-class AuthMiddleware extends Middleware
+class AuthRequireMiddleware extends Middleware
 {
     public array $actions = [];
     

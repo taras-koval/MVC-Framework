@@ -8,13 +8,17 @@ class View
     private string $layoutsPath;
     private string $viewsPath;
     
+    private string $title;
+    
     public function __construct()
     {
         $config = require ROOT.'/config/view.php';
         
-        $this->layout = $config['defalultLayout'];
+        $this->layout = $config['defaultLayout'];
         $this->layoutsPath = $config['layoutsPath'];
         $this->viewsPath = $config['viewsPath'];
+        
+        $this->title = $config['defaultTitle'];
     }
     
     public function getViewsPath()
@@ -24,8 +28,8 @@ class View
     
     public function make(string $path, array $data)
     {
-        $layoutContent = $this->getLayoutContent();
         $viewContent = $this->getViewContent($path, $data);
+        $layoutContent = $this->getLayoutContent();
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
     
@@ -50,5 +54,15 @@ class View
         if (file_exists("$this->layoutsPath/$layout.php")) {
             $this->layout = $layout;
         }
+    }
+    
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+    
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
     }
 }

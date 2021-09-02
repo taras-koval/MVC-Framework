@@ -16,16 +16,20 @@ function session(): Session
     return App::$session;
 }
 
-function view(string $path, array $data = [], ?string $layout = null) : Response
+function view(string $path, array $data = [], ?string $title = null, ?string $layout = null) : Response
 {
     $view = new View();
-    $views = $view->getViewsPath();
+    $viewsPath = $view->getViewsPath();
+    
+    if (isset($title)) {
+        $view->setTitle($title);
+    }
     
     if (isset($layout)) {
         $view->setLayout($layout);
     }
     
-    $renderedView = $view->make("$views/$path", $data);
+    $renderedView = $view->make("$viewsPath/$path", $data);
     return new Response($renderedView);
 }
 

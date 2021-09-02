@@ -7,7 +7,6 @@ use App\Core\ModelAR;
 class User extends ModelAR
 {
     public ?int $id = null;
-    
     public string $username = '';
     public string $email = '';
     public string $password = '';

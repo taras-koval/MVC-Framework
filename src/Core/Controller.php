@@ -4,9 +4,10 @@ namespace App\Core;
 
 abstract class Controller
 {
+    protected View $view;
+    
     /** @var Middleware[] $middlewares */
     protected array $middlewares = [];
-    protected View $view;
     
     public function __construct()
     {
@@ -52,6 +53,15 @@ abstract class Controller
         return "$viewsPath/$controllerViewsDir/$view.php";
     }
     
+    public function setTitle(string $title)
+    {
+        $this->view->setTitle($title);
+    }
+    
+    
+    /**
+     * @param  Middleware  $middleware
+     */
     public function registerMiddleware(Middleware $middleware)
     {
         $this->middlewares[] = $middleware;

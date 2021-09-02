@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Middleware\AuthMiddleware;
+use App\Middleware\AuthRequireMiddleware;
 use App\Model\User\User;
 use App\Model\User\UserLogin;
 use App\Model\User\UserRegister;
@@ -17,7 +17,7 @@ class AuthController extends Controller
         parent::__construct();
         $this->setLayout('bootstrap');
         
-        $this->registerMiddleware(new AuthMiddleware(['profile']));
+        $this->registerMiddleware(new AuthRequireMiddleware(['profile']));
     }
     
     public function profile(): Response
@@ -45,6 +45,7 @@ class AuthController extends Controller
     public function register(Request $request): Response
     {
         $userRegister = new UserRegister();
+        
         
         if ($request->isPost()) {
             $userRegister->loadFromRequest($request);
