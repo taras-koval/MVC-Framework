@@ -19,6 +19,18 @@ abstract class Model
     
     public function getInputsInfo(): array
     {
+        /**
+        return [
+            'username' => [
+                'value' => $this->{value},
+                'label' => {'Value'},
+                'rules' => [
+                    Validator::RULE_REQUIRED,
+                ]
+            ],
+        ];
+        */
+        
         return [];
     }
     
