@@ -6,6 +6,7 @@ class Validator
 {
     public const RULE_REQUIRED = 'required';
     public const RULE_ALPHANUMERIC = 'alphanumeric';
+    public const RULE_WORDS = 'words';
     public const RULE_EMAIL = 'email';
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
@@ -31,6 +32,11 @@ class Validator
                     case self::RULE_ALPHANUMERIC:
                         if (preg_match('~([^a-zA-Z0-9_-]+)~', $value)) {
                             $this->addError($field, $fieldData['label']. ' may only contain alphanumeric characters');
+                        }
+                        break;
+                    case self::RULE_WORDS:
+                        if (preg_match('~([^a-zA-Z ]+)~', $value)) {
+                            $this->addError($field, $fieldData['label']. ' may only contain alphabetic characters');
                         }
                         break;
                     case self::RULE_EMAIL:
