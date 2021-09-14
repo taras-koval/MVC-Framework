@@ -41,7 +41,7 @@ class Database
         return $stmt->fetch();
     }
     
-    public function findAll(string $table, array $where, $orderBy = 1,
+    public function findAll(string $table, array $where = [], $orderBy = 1,
         int $limit = 100, int $offset = 0, string $className = null)
     {
         $fields = array_keys($where);
@@ -49,11 +49,16 @@ class Database
             return false;
         }
         
-        $params = array_map(fn($field) => "$field = :$field", $fields);
-        $params = implode(' AND ', $params);
+        $sql = sprintf('SELECT * FROM %s ORDER BY %s LIMIT %u OFFSET %u',
+            $table, $orderBy, $limit, $offset);
+        
+        if ($where) {
+            $params = array_map(fn($field) => "$field = :$field", $fields);
+            $params = implode(' AND ', $params);
     
-        $sql = sprintf('SELECT * FROM %s WHERE %s ORDER BY %s LIMIT %u OFFSET %u',
-            $table, $params, $orderBy, $limit, $offset);
+            $sql = sprintf('SELECT * FROM %s WHERE %s ORDER BY %s LIMIT %u OFFSET %u',
+                $table, $params, $orderBy, $limit, $offset);
+        }
         
         $stmt = $this->pdo->prepare($sql);
         
