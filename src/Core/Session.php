@@ -11,13 +11,10 @@ class Session
     {
         session_start();
     
-        $flashMessages = $_SESSION['flash'] ?? [];
-        
-        foreach ($flashMessages as &$flashMessage) {
+        $_SESSION['flash'] = $_SESSION['flash'] ?? [];
+        foreach ($_SESSION['flash'] as &$flashMessage) {
             $flashMessage['remove'] = true;
         }
-        
-        $_SESSION['flash'] = $flashMessages;
     
         $this->userClass = (require ROOT.'/config/app.php')['userClass'];
         
@@ -62,29 +59,38 @@ class Session
         return !$this->user;
     }
     
-    public function setFlash($key, $message)
+    public function setSuccessFlash($message)
     {
-        $_SESSION['flash'][$key] = [
+        $_SESSION['flash']['success'] = [
             'remove' => false,
             'value' => $message
         ];
     }
     
-    public function getFlash($key)
+    public function setDangerFlash($message)
     {
-        return $_SESSION['flash'][$key]['value'] ?? '';
+        $_SESSION['flash']['danger'] = [
+            'remove' => false,
+            'value' => $message
+        ];
+    }
+    
+    public function getSuccessFlash()
+    {
+        return $_SESSION['flash']['success']['value'] ?? '';
+    }
+    
+    public function getDangerFlash()
+    {
+        return $_SESSION['flash']['danger']['value'] ?? '';
     }
     
     public function __destruct()
     {
-        $flashMessages = $_SESSION['flash'] ?? [];
-        
-        foreach ($flashMessages as $key => &$flashMessage) {
+        foreach ($_SESSION['flash'] as $key => $flashMessage) {
             if ($flashMessage['remove']) {
-                unset($flashMessages[$key]);
+                unset($_SESSION['flash'][$key]);
             }
         }
-        
-        $_SESSION['flash'] = $flashMessages;
     }
 }
