@@ -2,6 +2,7 @@
 
 use App\Controller\AuthController;
 use App\Controller\MainController;
+use App\Controller\AccountController;
 
 /**
  * Example route:
@@ -20,9 +21,10 @@ $routes['post']['/contact'] = [MainController::class, 'contact'];
 
 $routes['get']['/login'] = [AuthController::class, 'login'];
 $routes['post']['/login'] = [AuthController::class, 'login'];
-$routes['get']['/register'] = [AuthController::class, 'register'];
-$routes['post']['/register'] = [AuthController::class, 'register'];
+$routes['get']['/signup'] = [AuthController::class, 'register'];
+$routes['post']['/signup'] = [AuthController::class, 'register'];
 $routes['get']['/logout'] = [AuthController::class, 'logout'];
-$routes['get']['/profile'] = [AuthController::class, 'profile'];
+
+$routes['get']['/account'] = [AccountController::class, 'account'];
 
 return $routes;
