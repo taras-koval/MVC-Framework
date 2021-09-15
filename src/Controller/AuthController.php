@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Middleware\AuthRequireMiddleware;
 use App\Model\User\User;
 use App\Model\User\UserLogin;
 use App\Model\User\UserRegister;
@@ -15,15 +14,6 @@ class AuthController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->setLayout('bootstrap');
-        
-        $this->registerMiddleware(new AuthRequireMiddleware(['profile']));
-    }
-    
-    public function profile(): Response
-    {
-        
-        return $this->render('profile');
     }
     
     public function login(Request $request): Response
@@ -34,8 +24,7 @@ class AuthController extends Controller
             $userLogin->loadFromRequest($request);
     
             if ($userLogin->validate() && $userLogin->login()) {
-                session()->setFlash('success', 'Login success');
-                redirect('/login');
+                redirect('/account');
             }
         }
         
@@ -46,16 +35,17 @@ class AuthController extends Controller
     {
         $userRegister = new UserRegister();
         
-        
         if ($request->isPost()) {
             $userRegister->loadFromRequest($request);
     
             if ($userRegister->validate()) {
                 $user = (new User())->load($userRegister);
                 
-                if ($user->save()) {
-                    session()->setFlash('success', 'Register success');
-                    redirect('/register');
+                $user->id = $user->save();
+                
+                if ($user->id) {
+                    session()->auth($user);
+                    redirect('/account');
                 }
             }
         }

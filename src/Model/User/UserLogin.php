@@ -7,18 +7,18 @@ use App\Core\Validator;
 
 class UserLogin extends Model
 {
-    public string $username = '';
+    public string $email = '';
     public string $password = '';
     
     public function getInputsInfo(): array
     {
         return [
-            'username' => [
-                'value' => $this->username,
-                'label' => 'Username',
+            'email' => [
+                'value' => $this->email,
+                'label' => 'Email',
                 'rules' => [
                     Validator::RULE_REQUIRED,
-                    Validator::RULE_ALPHANUMERIC,
+                    Validator::RULE_EMAIL,
                 ]
             ],
             'password' => [
@@ -34,15 +34,15 @@ class UserLogin extends Model
     
     public function login(): bool
     {
-        $user = User::find(['username' => $this->username]);
+        $user = User::find(['email' => $this->email]);
         
         if (!$user) {
-            $this->addError('username', 'User does not exist');
+            session()->setDangerFlash('Incorrect email or password.');
             return false;
         }
         
         if (!password_verify($this->password, $user->password)) {
-            $this->addError('password', 'Password is incorrect');
+            session()->setDangerFlash('Incorrect email or password.');
             return false;
         }
         

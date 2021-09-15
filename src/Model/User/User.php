@@ -23,6 +23,7 @@ class User extends ModelAR
     
     public function save()
     {
+        $this->username = strtolower($this->username);
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         return parent::save();
     }
