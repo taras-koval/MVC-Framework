@@ -21,7 +21,12 @@ class Session
         $userId = $this->get('user');
         if ($userId) {
             $primaryKey = $this->userClass::getDBPrimaryKey();
-            $this->user = $this->userClass::find([$primaryKey => $userId]);
+            $user = $this->userClass::find([$primaryKey => $userId]);
+            if ($user) {
+                $this->user = $user;
+            } else {
+                $this->logout();
+            }
         }
     }
     
