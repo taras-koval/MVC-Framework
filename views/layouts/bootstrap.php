@@ -71,13 +71,12 @@
 
 <div class="container">
     
-    <?php if (session()->getFlash('success')): ?>
-        <div class="alert alert-success mt-4">
-            <?= session()->getFlash('success') ?>
-        </div>
+    <?php if (session()->getSuccessFlash()): ?>
+        <div class="alert alert-success mt-4"><?= session()->getSuccessFlash() ?></div>
     <?php endif; ?>
     
     {{content}}
+    
 </div>
 
 <!-- Optional JavaScript; choose one of the two! -->

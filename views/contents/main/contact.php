@@ -1,56 +1,77 @@
-<div class="contact-page">
-    
-    <div class="contact-page__header">
-        <div class="header-text">
-            <h1>Contact Us</h1>
-        </div>
-    </div>
-    
-    <div class="contact-page__body">
-        <div class="map-wrapper">
-    
-            <div class="contact-items">
-                <div class="contact-item">
-                    <strong>Email Support</strong>
-                    <span>contact@example.com</span>
-                </div>
-        
-                <div class="contact-item">
-                    <strong>Phone</strong>
-                    <span>+38 (068) 368 79 43</span>
-                </div>
-        
-                <div class="contact-item">
-                    <strong>Address</strong>
-                    <span>Mada Center 8th floor, 379 Hudson St,<br>New York, NY 10018 US</span>
-                </div>
-            </div>
-            
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11743.10047078739!2d-73.98249776955234!3d40.766427540430875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2596c2146e67d%3A0xf254834e0380e341!2sCentral%20Park%20Tower!5e0!3m2!1suk!2sua!4v1626611858488!5m2!1suk!2sua" allowfullscreen loading="lazy" class="map-frame"></iframe>
-        
-        </div>
-        
-        <div class="contact-form-wrapper">
-            <div class="contact-form-title">
-                <h2>Send Us A Message</h2>
-            </div>
-            
-            <form action="/contact" method="post" class="contact-form" autocomplete="off">
-                <label for="form-item-name" class="form-lable">Full name:</label>
-                <input type="text" name="name" id="form-item-name" class="form-item">
-                
-                <label for="form-item-email" class="form-lable">Email:</label>
-                <input type="text" name="email" id="form-item-email" class="form-item">
-                
-                <label for="form-item-message" class="form-lable">Message:</label>
-                <textarea name="message" id="form-item-message" class="form-item" rows="5"></textarea>
-                
-                <input type="submit" class="form-item form-submit" value="Send">
-            </form>
-        
-        </div>
-    </div>
-    
+<?php
+
+/**
+ * @var Contact $model
+ */
+
+use App\Model\Contact;
+
+?>
+<div class="map">
+    <iframe src="https://maps.google.com/maps?q=Dynamic%20Layers&t=&z=11&ie=UTF8&iwloc=&output=embed" width="100%" height="350" style="border:0;"></iframe>
 </div>
 
+<section class="contact-section">
+    
+    <div class="row">
+        <div class="col-50">
+            <h1>Contact Us</h1>
+            
+            <strong>Address</strong>
+            <p> 198 West 21th Street,<br>
+                New York, NY 10010</p>
 
+            <strong>Email</strong>
+            <p>email@example.com</p>
+
+            <strong>Phone</strong>
+            <p>+88 (0) 101 0000 000</p>
+        </div>
+        <div class="col-50">
+            <form action="" method="post" class="contact-form block">
+                <h2 class="text-center">Ask A Question</h2>
+                <p class="text-center intro">Get in touch with us & send us message today!</p>
+                
+                <?php if (session()->getSuccessFlash()): ?>
+                    <div class="alert-success"> <?= session()->getSuccessFlash() ?> </div>
+                <?php else: ?>
+                <div class="row">
+    
+                    <div class="form-item">
+                        <label for="email" class="form-label hidden">Email</label>
+                        <?php if (session()->isGuest()): ?>
+                        <input type="email" name="email" id="email" placeholder="Email"
+                               value="<?= $model->email ?>"
+                               class="form-control <?= $model->hasError('email')? 'is-invalid' : '' ?>">
+                        <div class="invalid-feedback"><?= $model->getFirstError('email') ?></div>
+                        <?php else: ?>
+                        <input type="email" name="email" id="email" placeholder="Email"
+                               value="<?= session()->user->email ?>"
+                               class="form-control" disabled>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="name" class="form-label hidden">Name</label>
+                        <input type="text" name="name" id="name" placeholder="Name"
+                               value="<?= $model->name ?>"
+                               class="form-control <?= $model->hasError('name')? 'is-invalid' : '' ?>">
+                        <div class="invalid-feedback"><?= $model->getFirstError('name') ?></div>
+                    </div>
+                    
+                    <div class="form-item">
+                        <label for="message" class="form-label hidden">Message</label>
+                        <textarea name="message" id="message" placeholder="Message" rows="5"
+                                  class="form-control <?= $model->hasError('message')? 'is-invalid' : '' ?>"><?= $model->message ?></textarea>
+                        <div class="invalid-feedback"><?= $model->getFirstError('message') ?></div>
+                    </div>
+                    
+                    <div class="form-item">
+                        <input type="submit" class="btn" value="Send">
+                    </div>
+                </div>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+</section>

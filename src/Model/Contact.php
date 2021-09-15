@@ -21,10 +21,10 @@ class Contact extends Model
         return [
             'name' => [
                 'value' => $this->name,
-                'label' => 'Full name',
+                'label' => 'Name',
                 'rules' => [
                     Validator::RULE_REQUIRED,
-                    Validator::RULE_ALPHANUMERIC,
+                    Validator::RULE_WORDS,
                 ]
             ],
             'email' => [

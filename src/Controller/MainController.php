@@ -23,11 +23,11 @@ class MainController extends Controller
             $contact->loadFromRequest($request);
             
             if ($contact->validate() && $contact->send()) {
-                session()->setFlash('success', 'Thanks for contacting us.');
+                session()->setSuccessFlash('Thanks for contacting us.');
                 redirect('/contact');
             }
         }
         
-        return $this->render('contact');
+        return $this->render('contact', ['model' => $contact]);
     }
 }
