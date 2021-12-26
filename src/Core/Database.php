@@ -11,7 +11,15 @@ class Database
     public function __construct()
     {
         $config = require ROOT.'/config/database.php';
-        $this->pdo = new PDO( $config['dsn'], $config['user'], $config['pass'], $config['options']);
+        
+        $dsn = sprintf('%s:host=%s;port=%u;dbname=%s;charset=utf8',
+            $config['connection'],
+            $config['host'],
+            $config['port'],
+            $config['database']
+        );
+        
+        $this->pdo = new PDO($dsn, $config['username'], $config['password'], $config['options']);
     }
     
     public function prepare($sql)

@@ -1,9 +1,12 @@
 <?php
 
 return [
-    'dsn' => $_ENV['DB_DSN'],
-    'user' => $_ENV['DB_USER'],
-    'pass' => $_ENV['DB_PASS'],
+    'connection' => $_ENV['DB_CONNECTION'],
+    'host' => $_ENV['DB_HOST'],
+    'port' => $_ENV['DB_PORT'],
+    'database' => $_ENV['DB_DATABASE'],
+    'username' => $_ENV['DB_USERNAME'],
+    'password' => $_ENV['DB_PASSWORD'],
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_PERSISTENT => true,
