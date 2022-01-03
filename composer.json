@@ -1,9 +1,8 @@
 {
-    "type": "project",
     "name": "taras-koval/app",
+    "type": "project",
     "description": "",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "keywords": ["mvc", "framework"],
     "license": "proprietary",
     "authors": [
         {
@@ -29,8 +28,16 @@
             "App\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "post-update-cmd": [
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    },
     "config": {
         "optimize-autoloader": true,
+        "preferred-install": "dist",
         "sort-packages": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
