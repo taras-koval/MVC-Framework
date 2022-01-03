@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Response;
-use App\Middleware\Authenticate;
+use App\Middlewares\Authenticate;
 
 class AccountController extends Controller
 {
