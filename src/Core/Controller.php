@@ -18,7 +18,6 @@ abstract class Controller
     protected function render(string $view, array $data = []): Response
     {
         $path = $this->getFullPath($view);
-        dd($path);
         return new Response($this->view->make($path, $data));
     }
     
