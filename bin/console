@@ -18,6 +18,7 @@ switch($argv[1])
     case 'migrate':
         (new App())::$database->applyMigrations();
         break;
+        
     default:
         echo 'Command "'.$argv[1].'" is not defined.';
 }

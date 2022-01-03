@@ -14,12 +14,15 @@ abstract class Controller
         $this->view = new View();
     }
     
+    // Render view with layout
     protected function render(string $view, array $data = []): Response
     {
         $path = $this->getFullPath($view);
+        dd($path);
         return new Response($this->view->make($path, $data));
     }
     
+    // Render view without layout
     protected function renderOnlyView(string $view, array $data = []): Response
     {
         $path = $this->getFullPath($view);
@@ -31,6 +34,7 @@ abstract class Controller
         $this->view->setLayout($layout);
     }
     
+    // If using namespace is App\Controllers\AuthController returns 'auth'
     private function getControllerViewsDir() : string
     {
         // Controller name without namespace
@@ -40,6 +44,8 @@ abstract class Controller
         return str_replace('Controller', '', lcfirst($controller));
     }
     
+    // 'auth/login.php' returns 'F:/domains/localhost/views/contents/auth/login.php'
+    // 'login' returns 'F:/domains/localhost/views/contents/auth/login.php'
     private function getFullPath($view): string
     {
         $view = ltrim($view, '\\/');
@@ -48,7 +54,7 @@ abstract class Controller
         if (preg_match('~[\W]+~', $view)) {
             return "$viewsPath/$view";
         }
-    
+        
         $controllerViewsDir = $this->getControllerViewsDir();
         return "$viewsPath/$controllerViewsDir/$view.php";
     }

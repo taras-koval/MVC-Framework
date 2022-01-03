@@ -10,7 +10,7 @@ use App\Models\User\UserLogin;
 
 <div class="auth-form-wrapper">
     <form action="" method="post" class="auth-form block">
-        <h1 class="form-heading text-center">Log into your account</h1>
+        <h1 class="form-heading text-center">Authorization</h1>
     
         <?php if (session()->getSuccessFlash()): ?>
             <div class="form-item">
