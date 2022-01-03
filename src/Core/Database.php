@@ -107,7 +107,7 @@ class Database
         $this->createMigrationsTable();
         $appliedMigrations = $this->getAppliedMigrations();
         
-        $files = scandir(ROOT.'/migrations');
+        $files = scandir(ROOT.'/database/migrations');
         $toApplyMigrations = array_diff($files, $appliedMigrations);
         
         $newMigrations = [];
@@ -118,7 +118,7 @@ class Database
                 continue;
             }
             
-            require_once ROOT.'/migrations/' . $migration;
+            require_once ROOT.'/database/migrations/'.$migration;
             
             $className = pathinfo($migration, PATHINFO_FILENAME);
             $instance = new $className();
