@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Response;
-use App\Middleware\AuthRequireMiddleware;
+use App\Middleware\Authenticate;
 
 class AccountController extends Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->registerMiddleware(new AuthRequireMiddleware(['account']));
+        $this->registerMiddleware(new Authenticate(['account']));
     }
     
     public function account(): Response

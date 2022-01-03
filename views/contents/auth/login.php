@@ -4,7 +4,7 @@
  * @var UserLogin $model
  */
 
-use App\Model\User\UserLogin;
+use App\Models\User\UserLogin;
 
 ?>
 

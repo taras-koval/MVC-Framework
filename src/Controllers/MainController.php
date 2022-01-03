@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Model\Contact;
+use App\Models\Contact;
 
 class MainController extends Controller
 {

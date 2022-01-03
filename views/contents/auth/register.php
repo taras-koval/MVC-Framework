@@ -4,7 +4,7 @@
  * @var UserRegister $model
  */
 
-use App\Model\User\UserRegister;
+use App\Models\User\UserRegister;
 
 ?>
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Model\User;
+namespace App\Models\User;
 
 use App\Core\Model;
 use App\Core\Validator;
+use App\Models\User;
 
 class UserLogin extends Model
 {

@@ -4,7 +4,7 @@
  * @var Contact $model
  */
 
-use App\Model\Contact;
+use App\Models\Contact;
 
 ?>
 <div class="map">

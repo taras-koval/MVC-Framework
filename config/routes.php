@@ -1,8 +1,8 @@
 <?php
 
-use App\Controller\AuthController;
-use App\Controller\MainController;
-use App\Controller\AccountController;
+use App\Controllers\AuthController;
+use App\Controllers\MainController;
+use App\Controllers\AccountController;
 
 /**
  * Example route:
