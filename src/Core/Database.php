@@ -12,8 +12,7 @@ class Database
     {
         $config = require ROOT.'/config/database.php';
         
-        $dsn = sprintf('%s:host=%s;port=%u;dbname=%s;charset=utf8',
-            $config['connection'],
+        $dsn = sprintf('mysql:host=%s;port=%u;dbname=%s;charset=utf8',
             $config['host'],
             $config['port'],
             $config['database']
