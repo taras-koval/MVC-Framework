@@ -1,16 +1,15 @@
 # https://habr.com/ru/post/141424/
 # https://youtu.be/nGHfiWjIDr8
 # https://codex.so/htaccess
+# https://coderoad.ru/704102/
+# https://habr.com/ru/sandbox/90459/
 
 AddDefaultCharset UTF-8
 
-# https://habr.com/ru/sandbox/90459/
-#Options +FollowSymlinks
+Options +FollowSymlinks
 #Options +SymLinksIfOwnerMatch
 
 RewriteEngine On
-
-# https://coderoad.ru/704102/
 RewriteBase /
 
 RewriteRule ^(.*)$ /public/$1
