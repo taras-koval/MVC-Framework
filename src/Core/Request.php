@@ -4,6 +4,12 @@ namespace App\Core;
 
 class Request
 {
+    private array $body = [];
+    
+    public function __construct()
+    {
+        $this->body = $this->extractBody();
+    }
     
     public function getPath(): string
     {
@@ -23,7 +29,7 @@ class Request
         return $this->getMethod() === 'post';
     }
     
-    public function getBody(): array
+    private function extractBody(): array
     {
         $body = [];
         
@@ -42,6 +48,40 @@ class Request
         }
         
         return $body;
+    }
+    
+    public function body(): array
+    {
+        return $this->body;
+    }
+    
+    public function get($key)
+    {
+        return $this->body()[$key];
+    }
+    
+    public function validate(array $rules): bool
+    {
+        session()->setRequestDataFlash($this->body());
+        
+        $errors = (new Validator())->validate($rules, $this->body());
+        
+        if (!empty($errors)) {
+            session()->setFormErrorsFlash($errors);
+            back();
+            return false;
+        }
+        
+        return !session()->hasFormErrors();
+    }
+    
+    public function old($key, $default = '')
+    {
+        if (session()->getRequestDataFlash($key)) {
+            return session()->getRequestDataFlash($key);
+        }
+        
+        return $default;
     }
     
 }
