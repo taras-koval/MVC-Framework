@@ -41,7 +41,7 @@ class Router
         $controllerInstance = new $controller();
         
         foreach ($controllerInstance->getMiddlewares() as $middleware) {
-            $middleware->execute(['action' => $action]);
+            $middleware->handle();
         }
         
         return call_user_func([$controllerInstance, $action], $this->request , ...$params);

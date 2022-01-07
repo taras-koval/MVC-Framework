@@ -7,7 +7,7 @@ abstract class Controller
     protected View $view;
     
     /** @var Middleware[] $middlewares */
-    protected array $middlewares = [];
+    private array $middlewares = [];
     
     public function __construct()
     {
@@ -63,13 +63,15 @@ abstract class Controller
         $this->view->setTitle($title);
     }
     
-    
     /**
-     * @param  Middleware  $middleware
+     * @param  string|null  $middleware
+     * You need set middleware class path (ex. Authenticate::class)
      */
-    public function registerMiddleware(Middleware $middleware)
+    public function middleware(string $middleware = null, array $params = null)
     {
-        $this->middlewares[] = $middleware;
+        if (isset($middleware)) {
+            $this->middlewares[] = new $middleware($params);
+        }
     }
     
     /**
