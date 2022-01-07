@@ -17,17 +17,8 @@ class MainController extends Controller
     
     public function contact(Request $request): Response
     {
-        $contact = new Contact();
+        dump($request->body());
         
-        if ($request->isPost()) {
-            $contact->loadFromRequest($request);
-            
-            if ($contact->validate() && $contact->send()) {
-                session()->setSuccessFlash('Thanks for contacting us.');
-                redirect('/contact');
-            }
-        }
-        
-        return $this->render('contact', ['model' => $contact]);
+        return $this->view('/main/contact.php');
     }
 }
