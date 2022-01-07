@@ -33,7 +33,7 @@ class Database
             return false;
         }
         
-        $params = array_map(fn($field) => "$field = :$field", $fields);
+        $params = array_map(fn($field) => "$field=:$field", $fields);
         $stmt = $this->pdo->prepare("SELECT * FROM $table WHERE ". implode(' AND ', $params));
     
         foreach ($where as $field => $value) {
@@ -42,9 +42,19 @@ class Database
         
         $stmt->execute();
         
+        /*$data = $stmt->fetch();
+        if ($data && isset($className)) {
+            $obj = new $className();
+            snakeCaseToCamelCaseArrayKeys($data);
+            setObjectFromArray($obj, $data);
+            return $obj;
+        }
+        return $data;*/
+    
         if (isset($className)) {
             $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
         }
+        
         return $stmt->fetch();
     }
     
@@ -60,7 +70,7 @@ class Database
             $table, $orderBy, $limit, $offset);
         
         if ($where) {
-            $params = array_map(fn($field) => "$field = :$field", $fields);
+            $params = array_map(fn($field) => "$field=:$field", $fields);
             $params = implode(' AND ', $params);
     
             $sql = sprintf('SELECT * FROM %s WHERE %s ORDER BY %s LIMIT %u OFFSET %u',
@@ -74,31 +84,67 @@ class Database
         }
         
         $stmt->execute();
+        
+        /*$data = $stmt->fetchAll();
+        if ($data && isset($className)) {
+            $objects = [];
+            foreach ($data as &$item) {
+                $obj = new $className();
+                snakeCaseToCamelCaseArrayKeys($item);
+                setObjectFromArray($obj, $item);
+                $objects[] = $obj;
+            }
+            return $objects;
+        }
+        return $data;*/
     
         if (isset($className)) {
             $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
         }
+        
         return $stmt->fetchAll();
     }
     
-    public function add(string $table, array $data)
+    public function create(string $table, array $data): ?int
     {
         $fields = array_keys($data);
         $params = array_map(fn($param) => ":$param", $fields);
         
-        $sql = sprintf('INSERT INTO %s (%s) VALUES (%s)',
-            $table,
-            implode(',', $fields),
-            implode(',', $params)
-        );
+        $fieldsImploded = implode(', ', $fields);
+        $paramsImplided = implode(', ', $params);
         
+        $sql = "INSERT INTO $table ($fieldsImploded) VALUES ($paramsImplided)";
         $stmt = $this->pdo->prepare($sql);
     
         foreach ($fields as $field) {
             $stmt->bindValue(":$field", $data[$field]);
         }
         
-        return $stmt->execute()? $this->pdo->lastInsertId() : false;
+        return $stmt->execute() ? intval($this->pdo->lastInsertId()) : null;
+    }
+    
+    public function update(string $table, array $data): bool
+    {
+        $fields = array_keys($data);
+        $params = array_map(fn($param) => "$param=:$param", $fields);
+        $params = implode(', ', $params);
+        
+        $sql = "UPDATE $table SET $params WHERE $table.id=" . $fields['id'];
+        $stmt = $this->pdo->prepare($sql);
+    
+        foreach ($fields as $field) {
+            $stmt->bindValue(":$field", $data[$field]);
+        }
+    
+        return $stmt->execute();
+    }
+    
+    public function delete(string $table, int $id): bool
+    {
+        $sql = "DELETE FROM $table WHERE $table.id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":id", $id);
+        return $stmt->execute();
     }
     
     public function applyMigrations()

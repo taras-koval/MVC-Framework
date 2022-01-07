@@ -4,61 +4,56 @@ namespace App\Core;
 
 abstract class Model
 {
-    public array $errors = [];
+    public ?int $id = null;
     
-    public function loadFromRequest(Request $request)
+    public function __construct(array $data = null)
     {
-        $data = $request->getBody();
-        
-        foreach ($data as $field => $value) {
-            if (property_exists($this, $field)) {
-                $this->{$field} = $value;
-            }
+        if (isset($data)) {
+            setObjectFromArray($this, $data);
         }
     }
     
-    public function getInputsInfo(): array
+    /**
+     * Get table name in the database
+     * @return string
+     */
+    abstract protected static function table() : string;
+    
+    /**
+     * Get the first record found in the database
+     * @param  array  $where
+     * @return false|mixed
+     */
+    public static function find(array $where)
     {
-        /**
-        return [
-            'username' => [
-                'value' => $this->{value},
-                'label' => {'Value'},
-                'rules' => [
-                    Validator::RULE_REQUIRED,
-                ]
-            ],
-        ];
-        */
+        return db()->find(static::table(), $where, static::class);
+    }
+    
+    public static function findById($id)
+    {
+        return static::find(['id' => $id]);
+    }
+    
+    public function save()
+    {
+        $fields = get_object_vars($this);
+        // camelCaseToSnakeCaseArrayKeys($fields);
         
-        return [];
+        if (isset($this->id)) {
+            return db()->update(static::table(), $fields);
+        }
+        
+        return $this->id = db()->create(static::table(), $fields);
     }
     
-    public function validate(): bool
+    public function delete()
     {
-        $this->errors = (new Validator())->validate($this->getInputsInfo());
-        return empty($this->errors);
+        db()->delete(static::table(), $this->id);
     }
     
-    public function getLabel($field): string
+    public function setFromRequest(Request $request)
     {
-        return $this->getInputsInfo()[$field]['label'] ?? '';
-    }
-    
-    public function addError(string $field, string $message)
-    {
-        $this->errors[$field][] = $message;
-    }
-    
-    public function hasError($field)
-    {
-        return $this->errors[$field] ?? false;
-    }
-    
-    public function getFirstError($field)
-    {
-        $errors = $this->errors[$field] ?? [];
-        return $errors[0] ?? '';
+        setObjectFromArray($this, $request->body());
     }
     
 }

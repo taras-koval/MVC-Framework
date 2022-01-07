@@ -33,8 +33,69 @@ function view(string $path, array $data = [], ?string $title = null, ?string $la
     return new Response($renderedView);
 }
 
-function redirect($url)
+function redirect($url, $code = 302)
 {
-    (new Response())->redirect($url);
+    (new Response())->redirect($url, $code);
 }
 
+function back()
+{
+    (new Response())->back();
+}
+
+function error($key)
+{
+    return App::$session->getFormErrorFlash($key)[0] ?? '';
+}
+
+function old($key, $default = '')
+{
+    if (session()->getRequestDataFlash($key)) {
+        return session()->getRequestDataFlash($key);
+    }
+    
+    return $default;
+}
+
+function camelCaseToSnakeCase($str): string
+{
+    return strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst($str)));
+}
+
+function camelCaseToSnakeCaseArrayKeys(&$arr)
+{
+    $temp = [];
+    foreach ($arr as $key => $value) {
+        $temp[camelCaseToSnakeCase($key)] = $value;
+    }
+    $arr = $temp;
+}
+
+function snakeCaseToCamelCase($str): string
+{
+    $camelCased = preg_replace_callback('/(^|_|\.)+(.)/', function ($match) {
+        return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
+    }, $str);
+    
+    return lcfirst($camelCased);
+}
+
+function snakeCaseToCamelCaseArrayKeys(&$arr)
+{
+    $temp = [];
+    foreach ($arr as $key => $value) {
+        $temp[snakeCaseToCamelCase($key)] = $value;
+    }
+    $arr = $temp;
+}
+
+function setObjectFromArray(&$obj, $arr)
+{
+    foreach ($arr as $field => $value) {
+        if (property_exists($obj, $field)) {
+            $obj->{$field} = $value;
+        }
+    }
+    
+    return $obj;
+}
