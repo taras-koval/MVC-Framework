@@ -2,23 +2,18 @@
 
 namespace App\Models;
 
-use App\Core\ModelAR;
+use App\Core\Model;
 
-class User extends ModelAR
+class User extends Model
 {
-    public ?int $id = null;
-    public string $username = '';
-    public string $email = '';
-    public string $password = '';
+    public string $username;
+    public string $email;
+    public string $password;
+    public int $status;
     
-    public static function getDBTableName(): string
+    protected static function table(): string
     {
         return 'users';
-    }
-    
-    public static function getDBFields(): array
-    {
-        return ['username', 'email', 'password'];
     }
     
     public function save()
