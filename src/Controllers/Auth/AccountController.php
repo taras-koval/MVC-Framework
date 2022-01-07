@@ -16,6 +16,12 @@ class AccountController extends Controller
     public function account(): Response
     {
         
-        return $this->render('account');
+        return $this->view('/account/account.php');
+    }
+    
+    public function logout()
+    {
+        session()->logout();
+        redirect('/login');
     }
 }

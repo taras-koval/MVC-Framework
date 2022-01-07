@@ -5,14 +5,18 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
-use App\Models\Contact;
 
 class MainController extends Controller
 {
     public function index(): Response
     {
+        return $this->view('/main/home.php');
+    }
+    
+    public function showContact(): Response
+    {
         
-        return $this->render('home');
+        return $this->view('/main/contact.php');
     }
     
     public function contact(Request $request): Response

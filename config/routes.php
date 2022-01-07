@@ -1,8 +1,9 @@
 <?php
 
-use App\Controllers\AuthController;
+use App\Controllers\Auth\AccountController;
+use App\Controllers\Auth\LoginController;
+use App\Controllers\Auth\RegisterController;
 use App\Controllers\MainController;
-use App\Controllers\AccountController;
 
 /**
  * Example route:
@@ -16,14 +17,14 @@ use App\Controllers\AccountController;
  */
 
 $routes['get']['/'] = [MainController::class, 'index'];
-$routes['get']['/contact'] = [MainController::class, 'contact'];
+$routes['get']['/contact'] = [MainController::class, 'showContact'];
 $routes['post']['/contact'] = [MainController::class, 'contact'];
 
-$routes['get']['/login'] = [AuthController::class, 'login'];
-$routes['post']['/login'] = [AuthController::class, 'login'];
-$routes['get']['/signup'] = [AuthController::class, 'register'];
-$routes['post']['/signup'] = [AuthController::class, 'register'];
-$routes['get']['/logout'] = [AuthController::class, 'logout'];
+$routes['get']['/login'] = [LoginController::class, 'showLogin'];
+$routes['post']['/login'] = [LoginController::class, 'login'];
+$routes['get']['/signup'] = [RegisterController::class, 'showRegister'];
+$routes['post']['/signup'] = [RegisterController::class, 'register'];
+$routes['get']['/logout'] = [AccountController::class, 'logout'];
 
 $routes['get']['/account'] = [AccountController::class, 'account'];
 
