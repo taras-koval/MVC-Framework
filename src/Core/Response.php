@@ -35,11 +35,16 @@ class Response
         return $this;
     }
     
-    // TODO set status code
-    public function redirect($url)
+    public function redirect($url, $code = 302)
     {
-        header("Location: $url");
+        header("Location: $url", true, $code);
         exit();
     }
     
+    public function back()
+    {
+        $url = $_SERVER["HTTP_REFERER"] ?? $_SERVER["REQUEST_URI"];
+        header("Location: $url");
+        exit();
+    }
 }
