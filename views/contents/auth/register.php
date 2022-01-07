@@ -1,13 +1,3 @@
-<?php
-
-/**
- * @var UserRegister $model
- */
-
-use App\Models\User\UserRegister;
-
-?>
-
 <div class="auth-form-wrapper">
     <form action="" method="post" class="auth-form block">
         <h1 class="form-heading text-center">Sign up for your account</h1>
@@ -27,33 +17,33 @@ use App\Models\User\UserRegister;
         <div class="form-item">
             <label for="email" class="form-label hidden">Email</label>
             <input type="email" name="email" id="email" placeholder="Email" autofocus
-                   value="<?= $model->email ?>"
-                   class="form-control <?= $model->hasError('email')? 'is-invalid' : '' ?>">
-            <div class="invalid-feedback"><?= $model->getFirstError('email') ?></div>
+                   value="<?= old('email') ?>"
+                   class="form-control <?= error('email') ? 'is-invalid' : '' ?>">
+            <div class="invalid-feedback"><?= error('email') ?></div>
         </div>
     
         <div class="form-item">
             <label for="username" class="form-label hidden">Username</label>
             <input type="text" name="username" id="username" placeholder="Username"
-                   value="<?= $model->username ?>"
-                   class="form-control <?= $model->hasError('username')? 'is-invalid' : '' ?>">
-            <div class="invalid-feedback"><?= $model->getFirstError('username') ?></div>
+                   value="<?= old('username') ?>"
+                   class="form-control <?= error('username') ? 'is-invalid' : '' ?>">
+            <div class="invalid-feedback"><?= error('username') ?></div>
         </div>
         
         <div class="form-item">
             <label for="password" class="form-label hidden">Password</label>
             <input type="password" name="password" id="password" placeholder="Password"
-                   value="<?= $model->password ?>"
-                   class="form-control <?= $model->hasError('password')? 'is-invalid' : '' ?>">
-            <div class="invalid-feedback"><?= $model->getFirstError('password') ?></div>
+                   value="<?= old('password') ?>"
+                   class="form-control <?= error('password') ? 'is-invalid' : '' ?>">
+            <div class="invalid-feedback"><?= error('password') ?></div>
         </div>
     
         <div class="form-item">
             <label for="confirmPassword" class="form-label hidden">Confirm Password</label>
             <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password"
-                   value="<?= $model->confirmPassword ?>"
-                   class="form-control <?= $model->hasError('confirmPassword')? 'is-invalid' : '' ?>">
-            <div class="invalid-feedback"><?= $model->getFirstError('confirmPassword') ?></div>
+                   value="<?= old('confirmPassword') ?>"
+                   class="form-control <?= error('confirmPassword') ? 'is-invalid' : '' ?>">
+            <div class="invalid-feedback"><?= error('confirmPassword') ?></div>
         </div>
     
         <div class="form-item">

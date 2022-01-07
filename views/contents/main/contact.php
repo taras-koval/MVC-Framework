@@ -1,12 +1,3 @@
-<?php
-
-/**
- * @var Contact $model
- */
-
-use App\Models\Contact;
-
-?>
 <div class="map">
     <iframe src="https://maps.google.com/maps?q=Dynamic%20Layers&t=&z=11&ie=UTF8&iwloc=&output=embed" width="100%" height="350" style="border:0;"></iframe>
 </div>
@@ -41,9 +32,9 @@ use App\Models\Contact;
                         <label for="email" class="form-label hidden">Email</label>
                         <?php if (session()->isGuest()): ?>
                         <input type="email" name="email" id="email" placeholder="Email"
-                               value="<?= $model->email ?>"
-                               class="form-control <?= $model->hasError('email')? 'is-invalid' : '' ?>">
-                        <div class="invalid-feedback"><?= $model->getFirstError('email') ?></div>
+                               value="<?= old('email') ?>"
+                               class="form-control <?= error('email') ? 'is-invalid' : '' ?>">
+                        <div class="invalid-feedback"><?= error('email') ?></div>
                         <?php else: ?>
                         <input type="email" name="email" id="email" placeholder="Email"
                                value="<?= session()->user->email ?>"
@@ -54,16 +45,16 @@ use App\Models\Contact;
                     <div class="form-item">
                         <label for="name" class="form-label hidden">Name</label>
                         <input type="text" name="name" id="name" placeholder="Name"
-                               value="<?= $model->name ?>"
-                               class="form-control <?= $model->hasError('name')? 'is-invalid' : '' ?>">
-                        <div class="invalid-feedback"><?= $model->getFirstError('name') ?></div>
+                               value="<?= old('name') ?>"
+                               class="form-control <?= error('name') ? 'is-invalid' : '' ?>">
+                        <div class="invalid-feedback"><?= error('name') ?></div>
                     </div>
                     
                     <div class="form-item">
                         <label for="message" class="form-label hidden">Message</label>
                         <textarea name="message" id="message" placeholder="Message" rows="5"
-                                  class="form-control <?= $model->hasError('message')? 'is-invalid' : '' ?>"><?= $model->message ?></textarea>
-                        <div class="invalid-feedback"><?= $model->getFirstError('message') ?></div>
+                                  class="form-control <?= error('message') ? 'is-invalid' : '' ?>"><?= old('message') ?></textarea>
+                        <div class="invalid-feedback"><?= error('message') ?></div>
                     </div>
                     
                     <div class="form-item">
