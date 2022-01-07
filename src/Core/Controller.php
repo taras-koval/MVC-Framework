@@ -4,33 +4,27 @@ namespace App\Core;
 
 abstract class Controller
 {
-    protected View $view;
+    private View $view;
+    private string $layout;
+    private string $title;
     
     /** @var Middleware[] $middlewares */
     private array $middlewares = [];
     
-    public function __construct()
+    protected function view(string $view, array $data = []): Response
     {
         $this->view = new View();
-    }
+        
+        if (isset($this->layout)) {
+            $this->view->setLayout($this->layout);
+        }
     
-    // Render view with layout
-    protected function render(string $view, array $data = []): Response
-    {
+        if (isset($this->title)) {
+            $this->view->setTitle($this->title);
+        }
+        
         $path = $this->getFullPath($view);
         return new Response($this->view->make($path, $data));
-    }
-    
-    // Render view without layout
-    protected function renderOnlyView(string $view, array $data = []): Response
-    {
-        $path = $this->getFullPath($view);
-        return new Response($this->view->getViewContent($path, $data));
-    }
-    
-    protected function setLayout(string $layout)
-    {
-        $this->view->setLayout($layout);
     }
     
     // If using namespace is App\Controllers\AuthController returns 'auth'
@@ -58,7 +52,12 @@ abstract class Controller
         return "$viewsPath/$controllerViewsDir/$view.php";
     }
     
-    public function setTitle(string $title)
+    protected function setLayout(string $layout)
+    {
+        $this->view->setLayout($layout);
+    }
+    
+    protected function setTitle(string $title)
     {
         $this->view->setTitle($title);
     }

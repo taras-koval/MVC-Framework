@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
 use App\Core\Controller;
 use App\Core\Response;
@@ -10,8 +10,7 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
-        $this->registerMiddleware(new Authenticate(['account']));
+        $this->middleware(Authenticate::class);
     }
     
     public function account(): Response
