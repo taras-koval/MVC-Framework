@@ -34,7 +34,7 @@ class Router
         }
         
         if (!$route) {
-            return view('main/404.php')->setStatusCode(404);
+            return view('main/errors/404.php')->setStatusCode(404);
         }
         
         [$controller, $action] = $route;
