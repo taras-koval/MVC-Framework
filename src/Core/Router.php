@@ -49,14 +49,14 @@ class Router
     
     /**
      * @param $routes
-     * @param $path
+     * @param $urlPath
      * @param $params
-     * @return false|mixed
+     * @return false|string
      */
-    private function findUnstaticRoute($routes, $path, &$params)
+    private function findUnstaticRoute($routes, $urlPath, &$params)
     {
         foreach ($routes as $route => $handler) {
-            if (preg_match($this->routeCompile($route), $path, $params)) {
+            if (preg_match($this->routeCompile($route), $urlPath, $params)) {
                 array_shift($params);
                 return $handler;
             }
@@ -71,11 +71,29 @@ class Router
      */
     private function routeCompile($route): string
     {
-        $default = '([a-zA-Z][a-zA-Z0-9-_]*)';
+        $defaultPattern = '([a-zA-Z0-9_]+)';
         
-        return preg_replace_callback('~{(.+?)}~', function ($match) use ($default) {
-            return preg_match('~<(.+?)>~', $match[1], $regex) ? "($regex[1])" : $default;
-        }, "~^$route$~");
+        return preg_replace_callback(
+            '~{(.+?)}~',
+            function ($match) use ($defaultPattern) {
+                return preg_match('~<(.+?)>~', $match[1], $regex) ? "($regex[1])" : $defaultPattern;
+            },
+            "~^$route$~"
+        );
+    }
+    
+    private function findUnstaticRouteSimple($routes, $path, &$params)
+    {
+        foreach ($routes as $route => $handler) {
+            $routePattern = preg_replace('~{(.+?)}~', '([a-zA-Z0-9_]+)', "~^$route$~");
+            
+            if (preg_match($routePattern, $path, $params)) {
+                array_shift($params);
+                return $handler;
+            }
+        }
+        
+        return false;
     }
     
 }
