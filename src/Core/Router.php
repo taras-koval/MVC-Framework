@@ -82,6 +82,12 @@ class Router
         );
     }
     
+    /**
+     * @param $routes
+     * @param $path
+     * @param $params
+     * @return false|string
+     */
     private function findUnstaticRouteSimple($routes, $path, &$params)
     {
         foreach ($routes as $route => $handler) {
