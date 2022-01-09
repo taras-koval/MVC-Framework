@@ -71,6 +71,7 @@ class Router
      */
     private function routeCompile($route): string
     {
+        // For replacing '/post/{id}' to '/post/([a-zA-Z0-9_]+)'
         $defaultPattern = '([a-zA-Z0-9_]+)';
         
         return preg_replace_callback(
