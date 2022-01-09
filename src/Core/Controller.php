@@ -14,42 +14,16 @@ abstract class Controller
     protected function view(string $view, array $data = []): Response
     {
         $this->view = new View();
-        
-        if (isset($this->layout)) {
-            $this->view->setLayout($this->layout);
-        }
     
         if (isset($this->title)) {
             $this->view->setTitle($this->title);
         }
         
-        $path = $this->getFullPath($view);
-        return new Response($this->view->make($path, $data));
-    }
-    
-    // If using namespace is App\Controllers\AuthController returns 'auth'
-    private function getControllerViewsDir() : string
-    {
-        // Controller name without namespace
-        $controller = substr(strrchr(get_class($this), '\\'), 1);
-    
-        // Directory with views of the current controller
-        return str_replace('Controller', '', lcfirst($controller));
-    }
-    
-    // 'auth/login.php' returns 'F:/domains/localhost/views/contents/auth/login.php'
-    // 'login' returns 'F:/domains/localhost/views/contents/auth/login.php'
-    private function getFullPath($view): string
-    {
-        $view = ltrim($view, '\\/');
-        $viewsPath = $this->view->getViewsPath();
-    
-        if (preg_match('~[\W]+~', $view)) {
-            return "$viewsPath/$view";
+        if (isset($this->layout)) {
+            $this->view->setLayout($this->layout);
         }
         
-        $controllerViewsDir = $this->getControllerViewsDir();
-        return "$viewsPath/$controllerViewsDir/$view.php";
+        return new Response($this->view->render($view, $data));
     }
     
     protected function setLayout(string $layout)
@@ -62,9 +36,33 @@ abstract class Controller
         $this->view->setTitle($title);
     }
     
+    // If using namespace is App\Controllers\AuthController returns 'auth'
+    /*private function getControllerViewsDir() : string
+    {
+        // Controller name without namespace
+        $controller = substr(strrchr(get_class($this), '\\'), 1);
+    
+        // Directory with views of the current controller
+        return str_replace('Controller', '', lcfirst($controller));
+    }*/
+    
+    // '/auth/login.php' returns 'F:/domains/localhost/views/contents/auth/login.php'
+    // 'login' returns 'F:/domains/localhost/views/contents/auth/login.php'
+    /*private function getFullPath($view): string
+    {
+        $view = ltrim($view, '\\/');
+        $viewsPath = $this->view->getViewsRoot();
+    
+        if (preg_match('~[\W]+~', $view)) {
+            return "$viewsPath/$view";
+        }
+        
+        $controllerViewsDir = $this->getControllerViewsDir();
+        return "$viewsPath/$controllerViewsDir/$view.php";
+    }*/
+    
     /**
-     * @param  string|null  $middleware
-     * You need set middleware class path (ex. Authenticate::class)
+     * @param  string|null  $middleware (example - Authenticate::class)
      */
     public function middleware(string $middleware = null, array $params = null)
     {

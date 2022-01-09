@@ -2,7 +2,7 @@
 
 return [
     'defaultTitle' => 'Document',
-    'defaultLayout' => 'main',
-    'layoutsPath' => ROOT.'/views/layouts',
-    'viewsPath' => ROOT.'/views/contents'
+    'defaultLayout' => 'main.php',
+    'layoutsRoot' => ROOT . '/views/layouts',
+    'viewsRoot' => ROOT . '/views/contents'
 ];

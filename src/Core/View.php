@@ -4,24 +4,29 @@ namespace App\Core;
 
 class View
 {
-    private string $layout;
-    private string $layoutsPath;
-    private string $viewsPath;
     private string $title;
+    private string $layout;
+    private string $layoutsRoot;
+    private string $viewsRoot;
     
     public function __construct()
     {
-        $config = require ROOT.'/config/view.php';
-        
-        $this->layout = $config['defaultLayout'];
-        $this->layoutsPath = $config['layoutsPath'];
-        $this->viewsPath = $config['viewsPath'];
+        $config = require ROOT . '/config/view.php';
+    
         $this->title = $config['defaultTitle'];
+        $this->layout = $config['defaultLayout'];
+        $this->layoutsRoot = $config['layoutsRoot'];
+        $this->viewsRoot = $config['viewsRoot'];
     }
     
-    public function make(string $path, array $data)
+    /**
+     * @param  string  $viewPath (example - 'main/home.php')
+     * @param  array  $data
+     * @return string
+     */
+    public function render(string $viewPath, array $data): string
     {
-        $viewContent = $this->getViewContent($path, $data);
+        $viewContent = $this->getViewContent($viewPath, $data);
         $layoutContent = $this->getLayoutContent();
         
         return str_replace('{{content}}', $viewContent, $layoutContent);
@@ -32,22 +37,22 @@ class View
         extract($data);
         
         ob_start();
-        require $viewPath;
+        include $this->viewsRoot . '/' . ltrim($viewPath, '/');
         return ob_get_clean();
-    }
-    
-    public function setLayout(string $layout)
-    {
-        if (file_exists("$this->layoutsPath/$layout.php")) {
-            $this->layout = $layout;
-        }
     }
     
     private function getLayoutContent()
     {
         ob_start();
-        require "$this->layoutsPath/$this->layout.php";
+        include $this->layoutsRoot . '/' . ltrim($this->layout, '/');
         return ob_get_clean();
+    }
+    
+    public function setLayout(string $layout)
+    {
+        if (file_exists($this->layoutsRoot . '/' . ltrim($layout, '/'))) {
+            $this->layout = $layout;
+        }
     }
     
     public function setTitle(string $title): void
@@ -60,8 +65,4 @@ class View
         return $this->title;
     }
     
-    public function getViewsPath()
-    {
-        return $this->viewsPath;
-    }
 }

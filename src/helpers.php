@@ -19,7 +19,6 @@ function session(): Session
 function view(string $path, array $data = [], ?string $title = null, ?string $layout = null) : Response
 {
     $view = new View();
-    $viewsPath = $view->getViewsPath();
     
     if (isset($title)) {
         $view->setTitle($title);
@@ -29,8 +28,7 @@ function view(string $path, array $data = [], ?string $title = null, ?string $la
         $view->setLayout($layout);
     }
     
-    $renderedView = $view->make("$viewsPath/$path", $data);
-    return new Response($renderedView);
+    return new Response($view->render($path, $data));
 }
 
 function redirect($url, $code = 302)
