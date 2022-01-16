@@ -9,60 +9,45 @@ class View
     private string $layoutsRoot;
     private string $viewsRoot;
     
-    public function __construct()
+    public function __construct(string $title = null, string $layout = null)
     {
         $config = require ROOT . '/config/view.php';
-    
-        $this->title = $config['defaultTitle'];
-        $this->layout = $config['defaultLayout'];
+        
+        $this->title = $title ?? $config['defaultTitle'];
+        $this->layout = $layout ?? $config['defaultLayout'];
         $this->layoutsRoot = $config['layoutsRoot'];
         $this->viewsRoot = $config['viewsRoot'];
     }
     
     /**
-     * @param  string  $viewPath (example - 'main/home.php')
+     * @param  string  $path (example - 'main/home.php')
      * @param  array  $data
      * @return string
      */
-    public function render(string $viewPath, array $data): string
+    public function render(string $path, array $data = []): string
     {
-        $viewContent = $this->getViewContent($viewPath, $data);
-        $layoutContent = $this->getLayoutContent();
+        $viewContent = $this->getViewContent($path);
+        $layoutContent = $this->getLayoutContent($data);
         
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
     
-    public function getViewContent(string $viewPath, array $data)
+    public function getViewContent(string $viewPath)
     {
-        extract($data);
-        
         ob_start();
         include $this->viewsRoot . '/' . ltrim($viewPath, '/');
         return ob_get_clean();
     }
     
-    private function getLayoutContent()
+    private function getLayoutContent(array $data)
     {
+        $data['title'] = $this->title;
+        
+        extract($data);
+        
         ob_start();
         include $this->layoutsRoot . '/' . ltrim($this->layout, '/');
         return ob_get_clean();
-    }
-    
-    public function setLayout(string $layout)
-    {
-        if (file_exists($this->layoutsRoot . '/' . ltrim($layout, '/'))) {
-            $this->layout = $layout;
-        }
-    }
-    
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-    
-    public function getTitle(): string
-    {
-        return $this->title;
     }
     
 }

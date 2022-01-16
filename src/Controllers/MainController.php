@@ -8,8 +8,14 @@ use App\Core\Response;
 
 class MainController extends Controller
 {
+    public function __construct()
+    {
+        $this->title = 'Home';
+    }
+    
     public function index(): Response
     {
+        
         return $this->view('/main/home.php');
     }
     

@@ -16,18 +16,9 @@ function session(): Session
     return App::$session;
 }
 
-function view(string $path, array $data = [], ?string $title = null, ?string $layout = null) : Response
+function view(string $path, array $data = [], ?string $title = null, ?string $layout = null): Response
 {
-    $view = new View();
-    
-    if (isset($title)) {
-        $view->setTitle($title);
-    }
-    
-    if (isset($layout)) {
-        $view->setLayout($layout);
-    }
-    
+    $view = new View($title, $layout);
     return new Response($view->render($path, $data));
 }
 
