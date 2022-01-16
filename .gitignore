@@ -3,6 +3,5 @@
 
 ### Composer ###
 /vendor/
-composer.lock
 
 .env
