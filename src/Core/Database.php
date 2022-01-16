@@ -26,14 +26,17 @@ class Database
         return $this->pdo->prepare($sql);
     }
     
+    /**
+     * @param  string  $table (example - 'users')
+     * @param  array  $where (example - ['id' => 1])
+     * @param  string|null  $className
+     * @return mixed
+     */
     public function find(string $table, array $where, string $className = null)
     {
         $fields = array_keys($where);
-        if (count(array_filter($fields, 'is_int')) > 0) {
-            return false;
-        }
-        
         $params = array_map(fn($field) => "$field=:$field", $fields);
+        
         $stmt = $this->pdo->prepare("SELECT * FROM $table WHERE ". implode(' AND ', $params));
     
         foreach ($where as $field => $value) {
@@ -41,30 +44,26 @@ class Database
         }
         
         $stmt->execute();
-        
-        /*$data = $stmt->fetch();
-        if ($data && isset($className)) {
-            $obj = new $className();
-            snakeCaseToCamelCaseArrayKeys($data);
-            setObjectFromArray($obj, $data);
-            return $obj;
-        }
-        return $data;*/
     
         if (isset($className)) {
             $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
         }
-        
         return $stmt->fetch();
     }
     
+    /**
+     * @param  string  $table (example - 'users')
+     * @param  array  $where (example - ['username' => 'tom'])
+     * @param  string|int  $orderBy
+     * @param  int  $limit
+     * @param  int  $offset
+     * @param  string|null  $className
+     * @return array|false
+     */
     public function findAll(string $table, array $where = [], $orderBy = 1,
         int $limit = 100, int $offset = 0, string $className = null)
     {
         $fields = array_keys($where);
-        if (count(array_filter($fields, 'is_int')) > 0) {
-            return false;
-        }
         
         $sql = sprintf('SELECT * FROM %s ORDER BY %s LIMIT %u OFFSET %u',
             $table, $orderBy, $limit, $offset);
@@ -101,7 +100,6 @@ class Database
         if (isset($className)) {
             $stmt->setFetchMode(PDO::FETCH_CLASS, $className);
         }
-        
         return $stmt->fetchAll();
     }
     
