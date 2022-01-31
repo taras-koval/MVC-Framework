@@ -10,7 +10,7 @@ class Database
     
     public function __construct()
     {
-        $config = require ROOT.'/config/database.php';
+        $config = config('database');
         
         $dsn = sprintf('mysql:host=%s;port=%u;dbname=%s;charset=utf8',
             $config['host'],

@@ -11,7 +11,7 @@ class View
     
     public function __construct(string $title = null, string $layout = null)
     {
-        $config = require ROOT . '/config/view.php';
+        $config = config('view');
         
         $this->title = $title ?? $config['defaultTitle'];
         $this->layout = $layout ?? $config['defaultLayout'];

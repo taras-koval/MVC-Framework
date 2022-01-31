@@ -15,7 +15,7 @@ class Router
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->routes = include ROOT . '/config/routes.php';
+        $this->routes = config('routes');
     }
     
     /**

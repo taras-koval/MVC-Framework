@@ -88,3 +88,8 @@ function setObjectFromArray(&$obj, $arr)
     
     return $obj;
 }
+
+function config(string $config): array
+{
+    return require ROOT."/config/$config.php";
+}
