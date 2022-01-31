@@ -12,8 +12,7 @@ abstract class Controller
     
     protected function view(string $path, array $data = []): Response
     {
-        $view = new View($this->title, $this->layout);
-        return new Response($view->render($path, $data));
+        return view($path, $data, $this->title, $this->layout);
     }
     
     /**
